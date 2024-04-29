@@ -1,0 +1,253 @@
+paths:
+ /api/carts/{cid}:
+  get:
+   summary: Mostrar carrito por id
+   tags:
+    - Carts
+   parameters:
+    - name: cid
+      in: path
+      required: true
+      description: cid es el id del carrito
+      schema:
+       $type: string
+   responses:
+    "200":
+     description: Los carritos se obtuvieron de forma correcta
+     content:
+      application/json:
+       schema:
+        type: array
+        items:
+         $ref: "#components/schemas/Cart"
+    "500":
+     description: Error interno del servidor
+  put:
+   summary: Editar productos del carrito por id
+   tags:
+    - Carts
+   parameters:
+    - name: cid
+      in: path
+      required: true
+      description: cid es el id del carrito
+      schema:
+       $type: object
+   requestBody:
+    required: true
+    content:
+     application/json:
+      schema:
+       $ref: "#components/requestBodies/UpdateCart"
+   responses:
+    "200":
+     description: Productos actualizados
+    "500":
+     description: Error interno del servidor
+  delete:
+   summary: Eliminar todos los productos del carrito por id
+   tags:
+    - Carts
+   parameters:
+    - name: cid
+      in: path
+      required: true
+      description: cid es el id del carrito
+      schema:
+       $type: string
+   responses:
+    "200":
+     description: Productos eliminados
+    "500":
+     description: Error interno del servidor    
+ /api/carts/:
+  get:
+   summary: Mostrar todos los carritos
+   tags:
+    - Carts
+   responses:
+    "200":
+     description: Los carritos se obtuvieron de forma correcta
+     content:
+      application/json:
+       schema:
+        type: array
+        items:
+         $ref: "#components/schemas/Cart"
+    "500":
+     description: Error interno del servidor
+  post:
+   summary: Agregar nuevo carrito
+   tags:
+    - Carts
+   parameters:
+      schema:
+       $type: object
+   responses:
+    "200":
+     description: Carrito nuevo agregado
+    "500":
+     description: Error interno del servidor
+ /api/carts/{cid}/product/{pid}:
+  post:
+   summary: Seleccionamos nuestro carrito (cid) y le agregamos un nuevo producto (pid)
+   tags:
+    - Carts
+   parameters:
+    - name: cid
+      in: path
+      required: true
+      description: cid es el id del carrito
+      schema:
+       $type: string
+    - name: pid
+      in: path
+      required: true
+      description: pid es el id del producto
+      schema:
+       $type: string
+   responses:
+    "200":
+     description: Producto agregado al carrito
+    "500":
+     description: Error interno del servidor
+  put:
+   summary: Seleccionamos nuestro carrito (cid) y editamos su producto (pid)
+   tags:
+    - Carts
+   parameters:
+    - name: cid
+      in: path
+      required: true
+      description: cid es el id del carrito
+      schema:
+       $type: string
+    - name: pid
+      in: path
+      required: true
+      description: pid es el id del producto
+   requestBody:
+    required: true
+    content:
+     application/json:
+      schema:
+       $ref: "#components/requestBodies/UpdateQuantity"
+   responses:
+    "200":
+     description: Cantidad actualizada
+    "500":
+     description: Error interno del servidor
+ /api/carts/{cid}/purchase:
+  post:
+   summary: Finalizar compra del carrito
+   tags:
+    - Carts
+   parameters:
+    - name: cid
+      in: path
+      required: true
+      description: cid es el id del carrito
+   requestBody:
+    required: true
+    content:
+     application/json:
+      schema:
+       $ref: "#components/requestBodies/Purchase"
+    "200":
+     description: Compra realizada
+    "500":
+     description: Error interno del servidor
+components:
+ schemas:
+  Cart:
+   type: object
+   properties:
+    _id:
+     type: ObjectId
+     description: id del carrito
+    products:
+     type: string
+     description: Array de los productos
+   example:
+    _id: gsa98273skjhgda8912
+    products: [{"product": {"_id": "658abe9b80944aa1bbf64f92","title": "Auricular","description": "Auriculares duo","price": 10000,"thumbnail": "Sin imagen","code": "aur123","stock": 17,"__v": 0},"quantity": 5,"_id": "66037fd007aab9d87c4574ce"}]
+  Prod:
+   type: object
+   properties:
+    _id:
+     type: ObjectId
+     description: id del producto
+    title:
+     type: string
+     description: Nombre del producto
+    description:
+     type: string
+     description: Descripcion del producto
+    price:
+     type: string
+     description: Precio del producto
+    thumbnail:
+     type: string
+     description: Ruta de la imagen del producto
+    code:
+     type: string
+     description: Codigo unico del producto
+    stock:
+     type: number
+     description: 25
+   example:
+    _id: ObjectId("gsa98273skjhgda8912")
+    title: Teclado keyboard
+    description: Keyboard Dell, ultima generacion
+    price: 999
+    thumbnail: "http:www.imagen/perrito.jpg"
+    code: EEAS55
+    stock: 47
+    category: Grande
+ requestBodies:
+  UpdateCart:
+   type: object
+   properties:
+    title:
+     type: string
+     description: Nombre del producto
+    description:
+     type: string
+     description: Descripcion del producto
+    price:
+     type: string
+     description: Precio del producto
+    thumbnail:
+     type: string
+     description: Ruta de la imagen del producto
+    code:
+     type: string
+     description: Codigo unico del producto
+    stock:
+     type: number
+     description: 25
+   example:
+    _id: ObjectId("gsa98273skjhgda8912")
+    title: Teclado keyboard
+    description: Keyboard Dell, ultima generacion
+    price: 999
+    thumbnail: "http:www.imagen/perrito.jpg"
+    code: EEAS55
+    stock: 47
+    category: Grande
+  UpdateQuantity:
+   type: object
+   properties:
+    quantity:
+     type: number
+     description: Cantidad del nuevo producto
+   example:
+    quantity: 47
+  Purchase:
+   type: object
+   properties:
+    email:
+     type: string
+     description: Nombre del producto
+   example:
+    email: "aagustin067@gmail.com"

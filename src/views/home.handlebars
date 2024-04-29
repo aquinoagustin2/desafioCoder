@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de Productos</title>
+</head>
+<body>
+    <nav>
+      <ul>
+        <li><a href="/profile">Perfil</a></li>
+        <li><a href="/chat">Chat</a></li>
+        <li><a href="/carts/{{user.cart}}">Carrito</a></li>
+      </ul>
+    </nav>
+    <h1>Listado de Productos</h1>
+  {{#if user}}
+    <strong>Bienvenido, {{user.first_name}} {{user.last_name}}, estos son nuestros productos para ti!!</strong>
+  {{/if}}
+  <ul>
+    {{#each products}}
+      <li>
+        <img src="{{this.thumbnail}}" alt="">
+        <strong>ID:</strong> {{this._id}}<br>
+        <strong>Título:</strong> {{this.title}}<br>
+        <strong>Descripción:</strong> {{this.description}}<br>
+        <strong>Precio:</strong> {{this.price}}<br>
+        <strong>Stock:</strong> {{this.stock}}<br>
+        
+
+        <form id="addToCartForm-{{this._id}}" action="/api/carts/{{user.cart}}/products" method="post">
+          <input type="hidden" name="productId" value="{{this._id}}">
+          <input type="number" name="quantity" value="1" min="1">
+          <input type="submit" value="Agregar al Carrito">
+        </form>
+      </li> 
+    {{/each}}
+  </ul>
+  <div id="userData" data-cart-id="{{user.cart}}"></div>
+  {{#if products.hasPrevPage}}
+    <a href="{{products.prevLink}}">Página anterior</a>
+  {{/if}}
+
+  {{#if products.hasNextPage}}
+    <a href="{{products.nextLink}}">Página siguiente</a>
+  {{/if}}
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/agregarCart.js"></script>
+</body>
+</html>

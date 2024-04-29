@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Carrito</title>
+</head>
+<body>
+    <nav>
+        <ul> 
+            <li><a href="/">Home</a></li>
+            <li><a href="/profile">Perfil</a></li>
+            <li><a href="/chat">Chat</a></li>
+            <li><a href="/carts/{{user.cart}}">Carrito</a></li> 
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Detalles del Carrito</h1>
+        <p><strong>ID del Carrito:</strong> {{cart._id}}</p>
+        <ul>
+            {{#each cart.products}}
+                <li>
+                    <p><strong>Producto:</strong> {{product._id}}</p>
+                    <p><strong>Descripción:</strong> {{product.description}}</p>
+                    <p><strong>Cantidad:</strong> {{quantity}}</p>
+                    <p><strong>Precio Unitario:</strong> ${{product.price}}</p>
+                    <img src="{{this.product.thumbnail}}" alt="Thumbnail del Producto">
+                </li>
+            {{/each}}
+        </ul>
+        <p><strong>Total del Carrito:</strong> ${{cartTotal}}</p>
+
+        <form id="checkoutForm" action="/checkout" method="post">
+            <input type="submit" value="Finalizar Compra">
+        </form>
+    </div>
+</body>
+</html>

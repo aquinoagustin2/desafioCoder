@@ -1,0 +1,171 @@
+paths:
+ /api/products/{pid}:
+  get:
+   summary: Mostrar productos por id
+   tags:
+    - Prods
+   parameters:
+    - name: pid
+      in: path
+      required: true
+      description: pid es el id del producto
+      schema:
+       $type: string
+   responses:
+    "200":
+     description: Producto encontrado
+     content:
+      application/json:
+       schema:
+        type: array
+        items:
+         $ref: "#components/schemas/Prod"
+    "500":
+     description: Error interno del servidor
+  put:
+   summary: Editar productos por id
+   tags:
+    - Prods
+   parameters:
+    - name: pid
+      in: path
+      required: true
+      description: id del producto a actualizar
+      schema:
+       $type: object
+   requestBody:
+    required: true
+    content:
+     application/json:
+      schema:
+       $ref: "#components/requestBodies/UpdateProd"
+   responses:
+    "200":
+     description: Productos actualizados
+    "500":
+     description: Error interno del servidor
+  delete:
+   summary: Eliminar producto por id
+   tags:
+    - Prods
+   parameters:
+    - name: pid
+      in: path
+      required: true
+      description: pid es el id del producto
+      schema:
+       $type: string
+   responses:
+    "200":
+     description: Producto eliminado
+    "500":
+     description: Error interno del servidor    
+ /api/products/:
+  get:
+   summary: Mostrar todos los productos
+   tags:
+    - Prods
+   responses:
+    "200":
+     description: Los productos se obtuvieron de forma correcta
+     content:
+      application/json:
+       schema:
+        type: array
+        items:
+         $ref: "#components/schemas/Prod"
+    "500":
+     description: Error interno del servidor
+  post:
+   summary: Crear producto
+   tags:
+    - Prods
+   requestBody:
+    required: true
+    content:
+     application/json:
+      schema:
+       $ref: "#components/requestBodies/UpdateProd"
+   responses:
+    "200":
+     description: El producto se creo de forma correcta
+     content:
+      application/json:
+       schema:
+        type: object
+        properties:
+         status:
+          type: string
+         payload:
+          $ref: "#components/schemas/Prod"
+    "500":
+     description: Error interno del servidor
+components:
+ schemas:
+  Prod:
+   type: object
+   properties:
+    title:
+     type: string
+     description: Nombre del producto
+    description:
+     type: string
+     description: Descripcion del producto
+    price:
+     type: string
+     description: Precio del producto
+    thumbnail:
+     type: string
+     description: Ruta de la imagen del producto
+    code:
+     type: string
+     description: Codigo unico del producto
+    stock:
+     type: number
+     description: Cantidad de productos disponibles
+    category:
+     type: string
+     description: Categoria del producto
+   example:
+    _id: ObjectId("gsa98273skjhgda8913")
+    title: Teclado keyboard
+    description: Keyboard Dell, ultima generacion
+    price: 999
+    thumbnail: "http:www.imagen/perrito.jpg"
+    code: EEAS55
+    stock: 47
+    category: Grande
+ requestBodies:
+  UpdateProd:
+   type: object
+   properties:
+    title:
+     type: string
+     description: Nombre del producto
+    description:
+     type: string
+     description: Descripcion del producto
+    price:
+     type: string
+     description: Precio del producto
+    thumbnail:
+     type: string
+     description: Ruta de la imagen del producto
+    code:
+     type: string
+     description: Codigo unico del producto
+    stock:
+     type: number
+     description: Cantidad de productos disponibles
+    category:
+     type: string
+     description: Eliga la categoria del producto
+   example:
+    title: Teclado keyboard
+    description: Keyboard Dell, ultima generacion
+    price: 999
+    thumbnail: "http:www.imagen/perrito.jpg"
+    code: EEAS55
+    stock: 47
+    category: "ASDALSKDJASLk"
+    
